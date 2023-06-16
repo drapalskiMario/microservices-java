@@ -22,6 +22,7 @@ import java.util.UUID;
 public class TransactionDto {
 
     @Schema(description = "Identifier")
+    @Id
     private UUID uuid;
 
     @Schema(description = "Value")
@@ -33,7 +34,7 @@ public class TransactionDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime date;
 
-    @Schema(name = "Account")
+    @Schema(description = "Account")
     @NotNull(message = "Account is required")
     @Valid
     private AccountDto accountDto;

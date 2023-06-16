@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @SpringBootApplication
+@EnableRedisRepositories(basePackages = {"br.com.mdrapalski.transactionbff.redis"})
 public class TransactionBffApplication {
 
     public static void main(String[] args) {

@@ -5,4 +5,8 @@ springdoc:
     path: /swagger-ui.html
   packagesToScan: br.com.mdrapalski.transactionbff.api
 
+spring:
+  redis:
+    port: 6379
+    host: localhost
 
