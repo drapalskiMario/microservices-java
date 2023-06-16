@@ -1,0 +1,8 @@
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  packagesToScan: br.com.mdrapalski.transactionbff.api
+
+
