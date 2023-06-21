@@ -3,6 +3,7 @@ package br.com.mdrapalski.transactionbff.api;
 import br.com.mdrapalski.transactionbff.domain.TransactionService;
 import br.com.mdrapalski.transactionbff.dto.RequestTransactionDto;
 import br.com.mdrapalski.transactionbff.dto.TransactionDto;
+import br.com.mdrapalski.transactionbff.exception.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -10,10 +11,8 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -21,6 +20,7 @@ import reactor.core.publisher.Mono;
 @Tag(name = "/transaction", description = "Group of APIs for handling financial transactions")
 public class TransactionController {
 
+    private static final String NOT_FOUND_MESSAGE = "Unable to find resource";
     private TransactionService transactionService;
 
     public TransactionController(TransactionService transactionService) {
@@ -39,10 +39,10 @@ public class TransactionController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<TransactionDto> sendTransaction(@RequestBody final RequestTransactionDto requestTransactionDto) {
         final var transactionDto = this.transactionService.save(requestTransactionDto);
-        if (transactionDto.isPresent()) {
-            return Mono.just(transactionDto.get());
+        if (transactionDto.isEmpty()) {
+            throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find resource");
+        return Mono.just(transactionDto.get());
     }
 
     @Operation(description = "API to find a financial transaction by Identifier")
@@ -56,10 +56,10 @@ public class TransactionController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<TransactionDto> findTransaction(@PathVariable("id") final String id) {
         final var transactionDto = this.transactionService.findById(id);
-        if (transactionDto.isPresent()) {
-            return Mono.just(transactionDto.get());
+        if (transactionDto.isEmpty()) {
+            throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find resource");
+        return Mono.just(transactionDto.get());
     }
 
     @Operation(description = "API to delete a financial transaction by Identifier")

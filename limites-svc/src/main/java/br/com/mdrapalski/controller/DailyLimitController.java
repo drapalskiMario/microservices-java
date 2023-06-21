@@ -17,9 +17,14 @@ public class DailyLimitController {
         this.dailyLimitService = dailyLimitService;
     }
 
+    @GetMapping("/daily-limit/{bankBranch}/{account}")
+    public DailyLimit findOrCreate(@PathVariable Long bankBranch, @PathVariable Long account) {
+        return dailyLimitService.findOrCreate(bankBranch, account);
+    }
+
     @GetMapping("/daily-limit/{id}")
-    public DailyLimit findById(@PathVariable("id") Long id) {
-        var dayLimit = this.dailyLimitService.findById(id);
+    public DailyLimit findById(@PathVariable Long id) {
+        var dayLimit = dailyLimitService.findById(id);
 
         if (dayLimit.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found");

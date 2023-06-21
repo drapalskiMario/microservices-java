@@ -1,8 +1,6 @@
 package br.com.mdrapalski.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -12,6 +10,7 @@ import java.util.Objects;
 public class DailyLimit {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long bankBranch;

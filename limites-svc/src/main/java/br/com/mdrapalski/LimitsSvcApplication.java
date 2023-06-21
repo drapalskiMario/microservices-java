@@ -2,7 +2,7 @@ package br.com.mdrapalski;
 
 
 import br.com.mdrapalski.entities.DailyLimit;
-import br.com.mdrapalski.controller.repository.DailyLimitRepository;
+import br.com.mdrapalski.repository.DailyLimitRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

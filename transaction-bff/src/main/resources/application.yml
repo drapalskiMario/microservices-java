@@ -10,3 +10,5 @@ spring:
     port: 6379
     host: localhost
 
+limits:
+  url:  http://localhost:3000

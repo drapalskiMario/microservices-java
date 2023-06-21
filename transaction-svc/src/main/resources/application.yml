@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      url: mongodb://admin:admin@localhost:27017/transaction
+      database: transaction
+server:
+  port: 3001

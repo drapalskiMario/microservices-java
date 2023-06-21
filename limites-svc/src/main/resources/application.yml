@@ -17,5 +17,6 @@ spring:
       show-sql: true
     generate-ddl: true
 
+
 server:
   port: 3000
