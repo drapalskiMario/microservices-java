@@ -1,5 +1,6 @@
 package br.com.mdrapalski.transactionbff.api;
 
+import br.com.mdrapalski.transactionbff.domain.LimitsService;
 import br.com.mdrapalski.transactionbff.dto.DailyLimitDto;
 import br.com.mdrapalski.transactionbff.feign.LimitsClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,16 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/limits")
-public class LimitController {
+public class LimitsController {
 
-    private LimitsClient client;
+    private LimitsService service;
 
-    public LimitController(LimitsClient client) {
-        this.client = client;
+    public LimitsController(LimitsService service) {
+        this.service = service;
     }
 
     @GetMapping("/{bankBranch}/{account}")
     public DailyLimitDto find(@PathVariable Long bankBranch, @PathVariable Long account) {
-        return client.findDailyLimit(bankBranch, account);
+        return service.findDailyLimit(bankBranch, account);
     }
 }

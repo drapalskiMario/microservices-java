@@ -37,6 +37,11 @@ dependencies {
 
 	//HTTP Consumer
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.0'
+
+	//Circuit breaker
+	implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.0.2'
+	implementation 'io.github.resilience4j:resilience4j-core:2.0.2'
+	implementation 'io.github.resilience4j:resilience4j-all:2.0.2'
 }
 
 test {
