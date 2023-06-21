@@ -42,6 +42,10 @@ dependencies {
 	implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.0.2'
 	implementation 'io.github.resilience4j:resilience4j-core:2.0.2'
 	implementation 'io.github.resilience4j:resilience4j-all:2.0.2'
+
+	//Retry
+	implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.2'
+
 }
 
 test {
