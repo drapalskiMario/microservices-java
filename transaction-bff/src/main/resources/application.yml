@@ -6,9 +6,25 @@ springdoc:
   packagesToScan: br.com.mdrapalski.transactionbff.api
 
 spring:
+  kafka:
+    producer:
+      client-id: transaction-bbf
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      transaction-id-prefix: transaction-bbf
+    bootstrap-servers: localhost:9092
+    properties:
+      spring:
+        json:
+          trusted:
+            packages: br.com.mdrapalski.*
+
   redis:
     port: 6379
     host: localhost
 
 limits:
   url:  http://localhost:3000
+
+app:
+  topic: transaction
