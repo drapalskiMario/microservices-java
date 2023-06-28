@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/limit
+    hikari:
+      username: limit
+      password: limit_password
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp:
+          use_jdbc_metadata_defaults: false
+    hibernate:
+      ddl-auto: update
+      generate-ddl: true
+      show-sql: true
+    generate-ddl: true
+  kafka:
+    consumer:
+      client-id: limits-svc
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      transaction-id-prefix: limits-svc
+      auto-offset-reset: latest
+      enable-auto-commit: false
+      group-id: limits-svc
+    bootstrap-servers: localhost:9092
+
+
+server:
+  port: 3000
+
+app:
+  topic: transaction
+  returnTopic: reversed-transaction

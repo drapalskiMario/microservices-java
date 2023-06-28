@@ -1,8 +1,15 @@
 spring:
-  data:
-    mongodb:
-      url: mongodb://admin:admin@localhost:27017/transaction
-      database: transaction
+  kafka:
+    consumer:
+      client-id: transaction-svc
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      transaction-id-prefix: limits-svc
+      auto-offset-reset: latest
+      enable-auto-commit: false
+      group-id: transaction-svc
+    bootstrap-servers: localhost:9092
+
 server:
   port: 3001
 
@@ -11,3 +18,7 @@ management:
     web:
       exposure:
         include: health, beans
+
+app:
+  topic: transaction
+  returnTopic: reversed-transaction

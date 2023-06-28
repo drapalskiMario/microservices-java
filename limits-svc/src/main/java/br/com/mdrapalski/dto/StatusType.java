@@ -1,4 +1,4 @@
-package br.com.mdrapalski.transactionsvc.dto;
+package br.com.mdrapalski.dto;
 
 
 public enum StatusType {
@@ -6,6 +6,5 @@ public enum StatusType {
     UNANALYZED,
     UNDER_HUMAN_ANALYSIS,
     SUSPECTED_FRAUD,
-    CONFIRMED_FRAUD,
-    APPROVED;
+    CONFIRMED_FRAUD;
 }

@@ -2,12 +2,11 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.0'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.flywaydb.flyway'version '8.4.3'
 }
 
 group = 'br.com.mdrapalski'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
-
 
 java {
 	sourceCompatibility = '17'
@@ -19,15 +18,21 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.postgresql:postgresql:42.5.4'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.projectlombok:lombok:1.18.26'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
 
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'io.projectreactor.kafka:reactor-kafka'
+}
+
+flyway {
+	url = 'jdbc:postgresql://localhost:5432/limit'
+	user = 'limit'
+	password = 'limit_password'
 }
 
 tasks.named('test') {

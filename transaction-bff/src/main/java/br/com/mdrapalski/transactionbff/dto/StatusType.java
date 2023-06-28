@@ -8,5 +8,6 @@ public enum StatusType {
     UNANALYZED,
     UNDER_HUMAN_ANALYSIS,
     SUSPECTED_FRAUD,
-    CONFIRMED_FRAUD;
+    CONFIRMED_FRAUD,
+    APPROVED;
 }

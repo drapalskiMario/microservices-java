@@ -12,6 +12,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       transaction-id-prefix: transaction-bbf
+      group-id: transaction-bbf
     bootstrap-servers: localhost:9092
     properties:
       spring:
@@ -23,8 +24,9 @@ spring:
     port: 6379
     host: localhost
 
-limits:
-  url:  http://localhost:3000
+url:
+  limits: http://localhost:3000
+  transactions: http://localhost:3001
 
 app:
   topic: transaction

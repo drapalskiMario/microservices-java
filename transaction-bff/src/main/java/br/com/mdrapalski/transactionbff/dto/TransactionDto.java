@@ -17,13 +17,13 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "uuid")
+@EqualsAndHashCode(of = "id")
 @RedisHash(value = "TransactionDto", timeToLive = 300)
 public class TransactionDto {
 
     @Schema(description = "Identifier")
     @Id
-    private UUID uuid;
+    private UUID id;
 
     @Schema(description = "Value")
     @NotNull(message = "Value is required")

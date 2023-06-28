@@ -1,9 +1,9 @@
 package br.com.mdrapalski.transactionbff.api;
 
-import br.com.mdrapalski.transactionbff.domain.TransactionService;
 import br.com.mdrapalski.transactionbff.dto.RequestTransactionDto;
 import br.com.mdrapalski.transactionbff.dto.TransactionDto;
 import br.com.mdrapalski.transactionbff.exception.exceptions.NotFoundException;
+import br.com.mdrapalski.transactionbff.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -11,9 +11,15 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.List;
 
 @RestController
 @RequestMapping("/transaction")
@@ -21,10 +27,10 @@ import reactor.core.publisher.Mono;
 public class TransactionController {
 
     private static final String NOT_FOUND_MESSAGE = "Unable to find resource";
-    private TransactionService transactionService;
+    private TransactionService service;
 
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
+    public TransactionController(TransactionService service) {
+        this.service = service;
     }
 
 
@@ -36,13 +42,10 @@ public class TransactionController {
             @ApiResponse(responseCode = "403", description = "Authorization error"),
             @ApiResponse(responseCode = "404", description = "Authentication error")
     })
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<TransactionDto> sendTransaction(@RequestBody final RequestTransactionDto requestTransactionDto) {
-        final var transactionDto = this.transactionService.save(requestTransactionDto);
-        if (transactionDto.isEmpty()) {
-            throw new NotFoundException(NOT_FOUND_MESSAGE);
-        }
-        return Mono.just(transactionDto.get());
+    public Mono<RequestTransactionDto> create(@RequestBody final RequestTransactionDto requestTransactionDto) {
+        return service.save(requestTransactionDto);
     }
 
     @Operation(description = "API to find a financial transaction by Identifier")
@@ -55,7 +58,7 @@ public class TransactionController {
     @ResponseBody
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<TransactionDto> findTransaction(@PathVariable("id") final String id) {
-        final var transactionDto = this.transactionService.findById(id);
+        final var transactionDto = this.service.findById(id);
         if (transactionDto.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
@@ -92,4 +95,24 @@ public class TransactionController {
         return Mono.empty();
     }
 
+
+    @GetMapping("/{bankBranch}/{account}")
+    public Flux<List<TransactionDto>> findTransaction(@PathVariable Long bankBranch, @PathVariable Long account) {
+        return service.findByBankBranchAndAccountFlux(bankBranch, account);
+    }
+
+    @GetMapping("/sse/{bankBranch}/{account}")
+    public Flux<ServerSentEvent<List<TransactionDto>>> findTransactionSSE(@PathVariable Long bankBranch, @PathVariable Long account) {
+        return Flux
+                .interval(Duration.ofSeconds(2))
+                .map(sequence -> {
+                    return ServerSentEvent
+                            .<List<TransactionDto>>builder()
+                            .id(String.valueOf(sequence))
+                            .event("transactions")
+                            .data(service.findByBankBranchAndAccount(bankBranch, account))
+                            .retry(Duration.ofSeconds(1))
+                            .build();
+                });
+    }
 }
