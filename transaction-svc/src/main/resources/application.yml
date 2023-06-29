@@ -11,7 +11,7 @@ spring:
     bootstrap-servers: localhost:9092
 
 server:
-  port: 3001
+  port: 8081
 
 management:
   endpoints:

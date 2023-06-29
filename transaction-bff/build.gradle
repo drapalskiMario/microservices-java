@@ -6,7 +6,6 @@ plugins {
 
 group = 'br.com.coffeeandit'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
 
 configurations {
 	compileOnly {
@@ -49,6 +48,10 @@ dependencies {
 	//kafka
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'io.projectreactor.kafka:reactor-kafka'
+
+	//micrometer e actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
 
 }
 
